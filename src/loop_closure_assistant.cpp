@@ -269,12 +269,13 @@ void LoopClosureAssistant::publishGraph()
 
   // Initialize edge marker for inter robot connections
   auto inter_robot_markers_name = karto::Name("inter_robot_edges");
+  auto inter_robot_localization_markers_name = karto::Name("inter_robot_localization_edges");
 
   visualization_msgs::msg::Marker inter_robot_edge_marker = edge_marker;
   inter_robot_edge_marker.ns = inter_robot_markers_name.ToString();
 
   visualization_msgs::msg::Marker inter_robot_localization_edge_marker = localization_edge_marker;
-  inter_robot_localization_edge_marker.ns = inter_robot_markers_name.ToString();
+  inter_robot_localization_edge_marker.ns = inter_robot_localization_markers_name.ToString();
 
   // Initialize edge marker for each sensor name in the map
   for (const auto & [sensor_name, marray] : m_sensor_name_to_marray) {
@@ -307,13 +308,13 @@ void LoopClosureAssistant::publishGraph()
     p1.y = pose1.GetY();
 
     if (source_id >= first_localization_id || target_id >= first_localization_id) {
-      if (source_sensor_name == target_sensor_name) {
+      if (source_sensor_name.ToString() == target_sensor_name.ToString()) {
         m_sensor_name_to_localization_edge_marker[source_sensor_name].points.push_back(p0);
         m_sensor_name_to_localization_edge_marker[source_sensor_name].points.push_back(p1);
       }
       else {
         inter_robot_localization_edge_marker.points.push_back(p0);
-        inter_robot_edge_marker.points.push_back(p1);
+        inter_robot_localization_edge_marker.points.push_back(p1);
       }
     } else {
       if (source_sensor_name.ToString() == target_sensor_name.ToString()) {

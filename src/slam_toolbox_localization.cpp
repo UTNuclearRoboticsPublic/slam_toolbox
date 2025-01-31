@@ -139,7 +139,6 @@ void LocalizationSlamToolbox::laserCallback(
 
   // ensure the laser can be used
   LaserRangeFinder * laser = getLaser(scan);
-
   if (!laser) {
     RCLCPP_WARN(get_logger(), "LocalizationSlamToolbox: Failed to create laser"
       " device for %s; discarding scan", scan->header.frame_id.c_str());
